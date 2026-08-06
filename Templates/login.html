@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Equipamentos</title>
+</head>
+<body>
+    
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <div id="login">
+
+        <h2>Login do Sistema</h2>
+
+        <input
+        type="text"
+        id="usuario"
+        placeholder="Usuário">
+
+        <input
+        type="password"
+        id="senha"
+        placeholder="Senha">
+
+        <button onclick="login()">
+            Entrar
+        </button>
+
+        <p id="mensagem"></p>
+
+    </div>
+
+
+    <div id="principal">
+
+        <h1>Sistema de Equipamentos</h1>
+
+        <p class="usuario">
+            Bem-vindo,
+            <strong id="nomeUsuario"></strong>
+        </p>
+
+        <div class="menu">
+
+            <button onclick="cadastro()">
+                Cadastro de Equipamentos
+            </button>
+
+            <button onclick="gestao()">
+                Gestão de Equipamentos
+            </button>
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
