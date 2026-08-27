@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Cadastro de Equipamento</title>
+</head>
+
+<body>
+
+    <div id="login">
+
+        <h2>Cadastro de Equipamento</h2>
+
+        <form method="POST" action="/equipamento">
+
+            <input
+                type="text"
+                name="marca"
+                placeholder="Marca"
+                required>
+
+            <input
+                type="text"
+                name="modelo"
+                placeholder="Modelo"
+                required>
+
+            <input
+                type="text"
+                name="categoria"
+                placeholder="Categoria"
+                required>
+
+            <input
+                type="text"
+                name="potencial"
+                placeholder="Potencial"
+                required>
+
+            <input
+                type="text"
+                name="material"
+                placeholder="Material"
+                required>
+
+            <input
+                type="number"
+                step="any"
+                name="peso"
+                placeholder="Peso"
+                required>
+
+            <input
+                type="number"
+                step="0.01"
+                name="dimensoes"
+                placeholder="Dimensões">
+
+            <input
+                type="text"
+                name="cor"
+                placeholder="Cor"
+                required>
+
+            <input
+                type="number"
+                name="quantidade"
+                placeholder="Quantidade"
+                required>
+
+            <button type="submit">
+                Cadastrar Equipamento
+            </button>
+
+        </form>
+
+        <a href="/principal" class="link-cadastro">
+            Voltar
+        </a>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/cadastro.js') }}"></script>
+
+</body>
+
+</html>

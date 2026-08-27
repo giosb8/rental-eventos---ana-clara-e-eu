@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/style.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
     <title>Sistema de Equipamentos</title>
+
 </head>
-    
 
 <body>
-
 
     <div id="login">
 
         <h2>Login do Sistema</h2>
 
         <input
-        type="text"
-        id="usuario"
-        placeholder="Usuário">
+            type="email"
+            id="email"
+            placeholder="E-mail">
 
         <input
-        type="password"
-        id="senha"
-        placeholder="Senha">
+            type="password"
+            id="senha"
+            placeholder="Senha">
 
         <button onclick="login()">
             Entrar
         </button>
+
+        <a href="/cadastro" class="link-cadastro">
+            Fazer cadastro
+        </a>
 
         <p id="mensagem"></p>
 
@@ -62,7 +70,8 @@
     </div>
 
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 
 </body>
+
 </html>

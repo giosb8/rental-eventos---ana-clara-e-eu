@@ -1,93 +1,112 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
+body {
     background-color: #FFD1DC;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 /* LOGIN */
 
-#login{
-    width:350px;
-    background:#FFD1DC;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0px 5px 15px rgba(0,0,0,.2);
+#login {
+    width: 350px;
+    background: #FFD1DC;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, .2);
 }
 
-#login h2{
-    text-align:center;
-    margin-bottom:20px;
-    color:#444;
-    font-family:'Matcha Mint';
+#login h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #444;
+    font-family: 'Matcha Mint';
 }
 
-input{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
 }
 
-button{
-    width:100%;
-    padding:12px;
-    margin-top:20px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:#FFF2A8;
-    font-weight:bold;
-    transition:.3s;
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #FFF2A8;
+    font-weight: bold;
+    transition: .3s;
 }
 
-button:hover{
-    background:#FFE066;
+button:hover {
+    background: #FFE066;
 }
 
-#mensagem{
-    text-align:center;
-    margin-top:15px;
-    color:red;
-    font-weight:bold;
+/* LINK DE CADASTRO */
+
+.link-cadastro {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+}
+
+.link-cadastro:hover {
+    text-decoration: underline;
+}
+
+/* MENSAGEM */
+
+#mensagem {
+    text-align: center;
+    margin-top: 15px;
+    color: red;
+    font-weight: bold;
 }
 
 
-#principal{
-    display:none;
-    width:700px;
-    background:#FFD1DC;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0px 5px 15px rgba(0,0,0,.2);
+/* TELA PRINCIPAL */
+
+#principal {
+    display: none;
+    width: 700px;
+    background: #FFD1DC;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, .2);
 }
 
-#principal h1{
-    text-align:center;
-    margin-bottom:20px;
+#principal h1 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.usuario{
-    text-align:center;
-    margin-bottom:30px;
-    font-size:20px;
+.funcionario {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 20px;
 }
 
-.menu{
-    display:flex;
-    gap:20px;
-    justify-content:center;
+.menu {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
 }
 
-.menu button{
-    width:220px;
+.menu button {
+    width: 220px;
 }

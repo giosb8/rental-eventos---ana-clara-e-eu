@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Registro de Movimentação</title>
+</head>
+
+<body>
+
+    <div id="login">
+
+        <h2>Registro de Movimentação</h2>
+
+        <form method="POST" action="/registro">
+
+            <input
+                type="text"
+                name="cliente_responsavel"
+                placeholder="Cliente responsável"
+                required>
+
+            <input
+                type="datetime-local"
+                name="data_movimentacao"
+                required>
+
+            <select name="tipo_movimentacao" required>
+
+                <option value="">
+                    Tipo de movimentação
+                </option>
+
+                <option value="Entrada">
+                    Entrada
+                </option>
+
+                <option value="Saída">
+                    Saída
+                </option>
+
+            </select>
+
+            <input
+                type="number"
+                name="quantidade"
+                placeholder="Quantidade"
+                min="1"
+                required>
+
+            <select name="equipamento_id" required>
+
+                <option value="">
+                    Selecione o equipamento
+                </option>
+
+                {% for equipamento in equipamentos %}
+
+                <option value="{{ equipamento[0] }}">
+                    {{ equipamento[1] }} - {{ equipamento[2] }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button type="submit">
+                Registrar
+            </button>
+
+        </form>
+
+        <a href="/principal" class="link-cadastro">
+            Voltar
+        </a>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/registro.js') }}"></script>
+
+</body>
+
+</html>

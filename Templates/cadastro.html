@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Cadastro - Rental Eventos</title>
+</head>
+
+<body>
+
+    <div id="login">
+
+        <h2>Cadastro de Funcionário</h2>
+
+        <form method="POST" action="/cadastro">
+
+            <input
+                type="text"
+                name="nome"
+                placeholder="Nome"
+                required>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="E-mail"
+                required>
+
+            <input
+                type="password"
+                name="senha"
+                placeholder="Senha"
+                required>
+
+            <button type="submit">
+                Cadastrar
+            </button>
+
+        </form>
+
+        <a href="/" class="link-cadastro">
+            Voltar para o login
+        </a>
+
+    </div>
+
+</body>
+
+</html>

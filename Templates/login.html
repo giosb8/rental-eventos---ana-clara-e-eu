@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Login - Rental Eventos</title>
+</head>
+
+<body>
+
+    <div id="login">
+
+        <h2>Rental Eventos</h2>
+
+        <form onsubmit="event.preventDefault(); login();">
+
+            <input
+                type="email"
+                id="email"
+                placeholder="E-mail"
+                required>
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Senha"
+                required>
+
+            <button type="submit">
+                Entrar
+            </button>
+
+            <p id="mensagem"></p>
+
+        </form>
+
+        <a href="/cadastro" class="link-cadastro">
+            Cadastrar funcionário
+        </a>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+</body>
+
+</html>
