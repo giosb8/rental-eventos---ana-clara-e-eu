@@ -1,198 +1,166 @@
-from flask import Flask, render_template, request, jsonify, session, redirect
 
-import pg8000
+from flask import Flask
+from flask_smorest import Api, Blueprint
+from marshmallow import Schema, fields
+from flask_sqlalchemy import SQLAlchemy
 
 from config import DB_CONFIG
 
+
 app = Flask(__name__)
 
-app.secret_key = "rental-eventos-chave"
+
+# =========================
+# CONFIGURAÇÃO DO BANCO
+# =========================
+
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"postgresql+pg8000://"
+    f"{DB_CONFIG['user']}:{DB_CONFIG['password']}"
+    f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}"
+    f"/{DB_CONFIG['database']}"
+)
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-def conectar_banco():
+# =========================
+# CONFIGURAÇÃO FLASK-SMOREST
+# =========================
 
-    return pg8000.connect(
-        host=DB_CONFIG["host"],
-        port=DB_CONFIG["port"],
-        database=DB_CONFIG["database"],
-        user=DB_CONFIG["user"],
-        password=DB_CONFIG["password"]
+app.config["API_TITLE"] = "Rental Eventos API"
+app.config["API_VERSION"] = "v1"
+app.config["OPENAPI_VERSION"] = "3.0.3"
+
+app.config["OPENAPI_SWAGGER_UI_PATH"] = "/docs"
+app.config["OPENAPI_SWAGGER_UI_URL"] = (
+    "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+)
+
+
+# =========================
+# BANCO
+# =========================
+
+db = SQLAlchemy(app)
+
+
+# =========================
+# API
+# =========================
+
+api = Api(app)
+
+
+# =========================
+# MODEL FUNCIONÁRIO
+# =========================
+
+class Funcionario(db.Model):
+
+    __tablename__ = "funcionario"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    nome = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    email = db.Column(
+        db.String(100),
+        unique=True,
+        nullable=False
+    )
+
+    senha = db.Column(
+        db.String(255),
+        nullable=False
     )
 
 
 # =========================
-# TELA DE LOGIN
+# SCHEMA DE LOGIN
 # =========================
 
-@app.route("/")
-def home():
+class LoginSchema(Schema):
 
-    if "funcionario" in session:
-        return redirect("/principal")
+    email = fields.Email(
+        required=True
+    )
 
-    return render_template("index.html")
+    senha = fields.String(
+        required=True
+    )
+
+
+# =========================
+# SCHEMA DE RESPOSTA
+# =========================
+
+class FuncionarioResponseSchema(Schema):
+
+    id = fields.Integer()
+
+    nome = fields.String()
+
+    email = fields.Email()
+
+
+# =========================
+# BLUEPRINT
+# =========================
+
+blp = Blueprint(
+    "funcionario",
+    "funcionario",
+    url_prefix="/funcionario",
+    description="Operações relacionadas ao funcionário"
+)
 
 
 # =========================
 # LOGIN
 # =========================
 
-@app.route("/login", methods=["POST"])
-def login():
+@blp.route("/login")
+class Login:
 
-    dados = request.get_json()
+    @blp.arguments(LoginSchema)
+    @blp.response(200, FuncionarioResponseSchema)
+    def post(self, dados):
 
-    email = dados.get("email")
-    senha = dados.get("senha")
+        funcionario = Funcionario.query.filter_by(
+            email=dados["email"],
+            senha=dados["senha"]
+        ).first()
 
-    if not email or not senha:
+        if not funcionario:
 
-        return jsonify({
-            "status": "erro",
-            "mensagem": "Preencha o e-mail e a senha."
-        }), 400
+            return {
+                "mensagem": "E-mail ou senha incorretos."
+            }, 401
 
-    try:
-
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
-
-        cursor.execute(
-            """
-            SELECT id, nome, email
-            FROM funcionario
-            WHERE email = %s
-            AND senha = %s
-            """,
-            (email, senha)
-        )
-
-        resultado = cursor.fetchone()
-
-        cursor.close()
-        conexao.close()
-
-        if resultado:
-
-            session["funcionario"] = resultado[2]
-            session["nome"] = resultado[1]
-
-            return jsonify({
-                "status": "sucesso",
-                "mensagem": "Login realizado com sucesso."
-            })
-
-        return jsonify({
-            "status": "erro",
-            "mensagem": "E-mail ou senha incorretos."
-        }), 401
-
-    except Exception as erro:
-
-        print("ERRO NO LOGIN:", erro)
-
-        return jsonify({
-            "status": "erro",
-            "mensagem": "Não foi possível realizar o login."
-        }), 500
+        return funcionario
 
 
 # =========================
-# CADASTRO DE USUÁRIO
+# REGISTRAR BLUEPRINT
 # =========================
 
-@app.route("/cadastro", methods=["GET", "POST"])
-def cadastro_funcionario():
-
-    if request.method == "GET":
-        return render_template("cadastro.html")
-
-    nome = request.form.get("nome")
-    email = request.form.get("email")
-    senha = request.form.get("senha")
-
-    if not nome or not email or not senha:
-        return "Preencha todos os campos.", 400
-
-    try:
-
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
-
-        # Verifica se o e-mail já está cadastrado
-        cursor.execute(
-            """
-            SELECT id
-            FROM funcionario
-            WHERE email = %s
-            """,
-            (email,)
-        )
-
-        funcionario_existente = cursor.fetchone()
-
-        if funcionario_existente:
-
-            cursor.close()
-            conexao.close()
-
-            return "Este e-mail já está cadastrado.", 400
-
-        # Insere o novo usuário
-        cursor.execute(
-            """
-            INSERT INTO funcionario (nome, email, senha)
-            VALUES (%s, %s, %s)
-            """,
-            (nome, email, senha)
-        )
-
-        conexao.commit()
-
-        cursor.close()
-        conexao.close()
-
-        return redirect("/")
-
-    except Exception as erro:
-
-        print("ERRO NO CADASTRO:", erro)
-
-        return "Não foi possível realizar o cadastro.", 500
+api.register_blueprint(blp)
 
 
 # =========================
-# INTERFACE PRINCIPAL
-# =========================
-
-@app.route("/principal")
-def principal():
-
-    if "funcionario" not in session:
-        return redirect("/")
-
-    return render_template(
-        "principal.html",
-        funcionario=session["funcionario"]
-    )
-
-
-# =========================
-# LOGOUT
-# =========================
-
-@app.route("/logout")
-def logout():
-
-    session.clear()
-
-    return redirect("/")
-
-
-# =========================
-# EXECUTAR SISTEMA
+# EXECUTAR API
 # =========================
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    app.run(
+        debug=True
+    )
+
